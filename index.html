@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will You Be My Valentine? 💝</title>
+    <style>
+        :root {
+            --bg-start: #ffafbd;
+            --bg-end: #ffc3a0;
+            --btn-bg: #ff6b6b;
+            --btn-hover: #ff8787;
+            --text-color: #ff4757;
+            --float-dist: 50px;
+            --float-dur: 15s;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
+            overflow: hidden;
+            color: var(--text-color);
+            text-align: center;
+        }
+
+        #container {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            z-index: 10;
+            max-width: 90%;
+            width: 400px;
+        }
+
+        .btn {
+            background: var(--btn-bg);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            margin: 10px;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .btn:hover {
+            background: var(--btn-hover);
+            transform: scale(1.1);
+        }
+
+        .floating {
+            position: absolute;
+            bottom: -50px;
+            font-size: 2rem;
+            opacity: 0.6;
+            user-select: none;
+            pointer-events: none;
+            animation: float var(--float-dur) linear infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) translateX(0); opacity: 1; }
+            50% { transform: translateY(-50vh) translateX(var(--float-dist)); }
+            100% { transform: translateY(-110vh) translateX(0); opacity: 0; }
+        }
+
+        .hidden { display: none; }
+
+        #loveRange { width: 100%; margin: 20px 0; accent-color: var(--btn-bg); }
+
+        #noBtn { position: relative; }
+    </style>
+</head>
+<body>
+
+    <div id="container">
+        <div id="step1">
+            <h1 id="vName">Hey Harshita aka puchs!</h1>
+            <h2>Do you love me?</h2>
+            <button class="btn" onclick="nextStep(2)">Yes</button>
+            <button class="btn" id="firstNo" onmouseover="moveNo()">Nah</button>
+            <p id="secret" class="hidden" style="font-style: italic; margin-top: 10px;">Maanja bhadwu baaabyyy🔪 ❣️Chlo Next Qn me krna</p>
+        </div>
+
+        <div id="step2" class="hidden">
+            <h2>How much do you love me?</h2>
+            <p id="loveDisplay">This much! 100%</p>
+            <input type="range" id="loveRange" min="100" max="6000" value="100" oninput="updateLoveMeter()">
+            <p id="loveMsg">And beyond! 🥰</p>
+            <button class="btn" onclick="nextStep(3)">Next ❤️</button>
+        </div>
+
+        <div id="step3" class="hidden">
+            <h2>Will you be my Valentine...?</h2>
+            <button class="btn" onclick="celebrate()">Yes!</button>
+            <button class="btn" id="finalNo" onmouseover="teleportNo()">No</button>
+        </div>
+
+        <div id="celebration" class="hidden">
+    <img src="https://media.tenor.com/9A9NQV3RzSQAAAAi/meow-hs-meow-flowers.gif" id="celebrationPhoto" alt="Us" />
+
+    <p style="font-weight: bold; margin-top: 15px;">A little floral surprise for you hehe: tight hugs and puchiiis; lucky to have you</p>
+    <div style="font-size: 2.5rem; margin-top: 10px;">🧿💖💋👉👈💕</div>
+</div>
+    </div>
+
+    <script>
+        // Floating Emojis Logic
+        const emojis = ['❤️', '💖', '💝', '💗', '💓', '🧸', '🐻'];
+        function createEmoji() {
+            const e = document.createElement('div');
+            e.className = 'floating';
+            e.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+            e.style.left = Math.random() * 100 + 'vw';
+            e.style.animationDuration = (Math.random() * 5 + 10) + 's';
+            document.body.appendChild(e);
+            setTimeout(() => e.remove(), 15000);
+        }
+        setInterval(createEmoji, 500);
+
+        // Navigation
+        function nextStep(step) {
+            document.getElementById('step1').classList.add('hidden');
+            document.getElementById('step2').classList.add('hidden');
+            document.getElementById('step3').classList.add('hidden');
+            document.getElementById('step' + step).classList.remove('hidden');
+        }
+
+        // Step 1 Secret
+        document.getElementById('firstNo').onclick = function() {
+            document.getElementById('secret').classList.remove('hidden');
+        };
+
+        // Love Meter Logic
+        function updateLoveMeter() {
+            const val = document.getElementById('loveRange').value;
+            const display = document.getElementById('loveDisplay');
+            const msg = document.getElementById('loveMsg');
+            display.innerText = `This much! ${val}%`;
+
+            if(val > 5000) msg.innerText = "AWWWWW You love me that much?? 😭💋💝";
+            else if(val > 1000) msg.innerText = "To infinity and beyond! 🧿💝";
+            else msg.innerText = "And beyond! 🥰";
+        }
+
+        // Runaway Button
+        function teleportNo() {
+            const btn = document.getElementById('finalNo');
+            btn.style.position = 'absolute';
+            btn.style.top = Math.random() * 80 + 'vh';
+            btn.style.left = Math.random() * 80 + 'vw';
+        }
+
+        function celebrate() {
+            document.getElementById('step3').classList.add('hidden');
+            document.getElementById('celebration').classList.remove('hidden');
+            for(let i=0; i<50; i++) { setTimeout(createEmoji, i*50); }
+        }
+    </script>
+</body>
+</html>
